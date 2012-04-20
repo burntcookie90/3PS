@@ -3,5 +3,7 @@
 
     <string name="hello">Hello World, ThreePSActivity!</string>
     <string name="app_name">ThreePS</string>
+    <string name="buyString">Buy!</string>
+    <string name="receicptString">Show Receipt!</string>
 
 </resources>
