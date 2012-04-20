@@ -12,7 +12,7 @@
         android:text="@string/buyString" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/btnReceipt"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="@string/receicptString" />
