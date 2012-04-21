@@ -17,7 +17,7 @@ public class DB {
 		String dbName = "3ps";
 		String driver = "com.mysql.jdbc.Driver";
 		String userName = "gt"; 
-		System.out.println(url+dbName+driver+userName);
+		//Log.v(TAG,url+dbName+driver+userName);
 		
 		try {
 			Class.forName(driver);

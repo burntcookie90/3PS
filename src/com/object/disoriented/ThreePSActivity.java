@@ -1,10 +1,21 @@
 package com.object.disoriented;
 
 import java.util.Random;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
+import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.Statement;
+
 import android.app.Activity;
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -17,7 +28,6 @@ public class ThreePSActivity extends Activity {
 	private Button btnBuy;
 	private Button btnReceipt;
 	private String user = "1";
-	private String sess_id;
 	private String TAG = "3PS Buyer Screen";
 	
 	@Override
@@ -60,18 +70,32 @@ public class ThreePSActivity extends Activity {
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
+            	Log.v(TAG, "gets here");
                 String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                String sess_id = genSessId();
-                String[] QRvals = contents.split(";");
-                String sq1 = "INSERT INTO session (SessionId, buyer, seller) VALUES ('"+sess_id+"','"+QRvals[0]+"','"+user+"')";
-                /*try{
-                	Statement stmt = con.createStatement();
-                	System.err.println(sql);
-                	ResultSet rs = stmt.executeQuery(sql);
+                
+                Log.v(TAG, "gets here2");
+                try{
+                	String url = "http://128.61.105.48/session.php";
+                	String charset = "UTF-8";
+                	String param1 = contents;
+                	String param2 = user;
+                	
+                	String query = "QRinput=" + param1 + "&user_id=" + param2;
+                	URLConnection con = new URL(url +"?" + query).openConnection();
+                	con.setRequestProperty("Accept-Charset", charset);
+
+                	Log.v(TAG, url + "?" + query);
+                	
+
                 } catch (SQLException e) {
                 	e.printStackTrace();
-                }*/
+                } catch (MalformedURLException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
                 Log.v(TAG,contents);
                 // Handle successful scan
             } else if (resultCode == RESULT_CANCELED) {
