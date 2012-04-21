@@ -1,17 +1,14 @@
 package com.object.disoriented;
 
-import java.util.Random;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.net.URLEncoder;
 import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.ResultSet;
-import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Random;
+import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -31,6 +28,7 @@ public class ThreePSActivity extends Activity {
 	private String sess_id;
 	private String TAG = "3PS Buyer Screen";
 	private Connection con;
+	private ArrayList<String> qrContents;
 	
 	@Override
 
@@ -38,6 +36,7 @@ public class ThreePSActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.buyer_start);
 
+		qrContents = new ArrayList<String>();
 		btnBuy = (Button) findViewById(R.id.btnBuy);
 		btnBuy.setOnClickListener(new OnClickListener() {
 
@@ -50,7 +49,6 @@ public class ThreePSActivity extends Activity {
 				Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 				startActivityForResult(intent, 0);
-				//tryrtutr
 			}
 		});
 
@@ -78,7 +76,14 @@ public class ThreePSActivity extends Activity {
                 String sess_id = genSessId();
                 String[] QRvals = contents.split(";");
                 String sql = "INSERT INTO session (SessionId, buyer, seller) VALUES ('"+sess_id+"','"+QRvals[0]+"','"+user+"')";
+                StringTokenizer st = new StringTokenizer(contents,";");
+                
                 Log.v(TAG, "gets here2");
+                
+                while(st.hasMoreTokens()){
+                	qrContents.add(st.nextToken());
+                }
+                
                 try{
                 	String url = "http://128.61.105.48/session.php";
                 	String charset = "UTF-8";
@@ -109,6 +114,11 @@ public class ThreePSActivity extends Activity {
 				}
                 Log.v(TAG,contents);
                 // Handle successful scan
+                
+                Intent i = new Intent(this,PurchaseActivity.class);
+                i.putStringArrayListExtra("qr_contents", qrContents);
+                startActivity(i);
+                
             } else if (resultCode == RESULT_CANCELED) {
                 // Handle cancel
             }
