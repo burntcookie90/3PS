@@ -14,6 +14,7 @@ public class PurchaseActivity extends Activity {
 	private TextView txtPrice;
 	private TextView txtItemName;
 	private TextView txtStoreName;
+	private String sessID;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
