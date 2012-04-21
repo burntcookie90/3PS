@@ -25,12 +25,6 @@
         android:text="Small Text"
         android:textAppearance="?android:attr/textAppearanceSmall" />
 
-    <ImageView
-        android:id="@+id/imageView1"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@drawable/ic_launcher" />
-
     <Button
         android:id="@+id/btnPurchase"
         android:layout_width="wrap_content"

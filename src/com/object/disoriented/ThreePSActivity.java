@@ -20,6 +20,38 @@ import android.widget.Button;
 import android.widget.Toast;
 
 public class ThreePSActivity extends Activity {
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onDestroy()
+	 */
+	@Override
+	protected void onDestroy() {
+		// TODO Auto-generated method stub
+		super.onDestroy();
+	}
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onPause()
+	 */
+	@Override
+	protected void onPause() {
+		// TODO Auto-generated method stub
+		super.onPause();
+	}
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStart()
+	 */
+	@Override
+	protected void onStart() {
+		// TODO Auto-generated method stub
+		super.onStart();
+	}
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onStop()
+	 */
+	@Override
+	protected void onStop() {
+		// TODO Auto-generated method stub
+		super.onStop();
+	}
 	/** Called when the activity is first created. */
 	private Button btnBuy;
 	private Button btnReceipt;
