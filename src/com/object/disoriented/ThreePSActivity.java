@@ -1,8 +1,6 @@
 package com.object.disoriented;
 
-import java.sql.Connection;
-import java.sql.DriverManager;
-import java.sql.SQLException;
+import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -18,13 +16,15 @@ public class ThreePSActivity extends Activity {
 	private Button btnBuy;
 	private Button btnReceipt;
 	private String TAG = "3PS Buyer Screen";
-
+	private ArrayList<String> qrContents;
 	@Override
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.buyer_start);
 
+		qrContents = new ArrayList<String>();
+		
 		btnBuy = (Button) findViewById(R.id.btnBuy);
 		btnBuy.setOnClickListener(new OnClickListener() {
 
@@ -37,7 +37,6 @@ public class ThreePSActivity extends Activity {
 				Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 				startActivityForResult(intent, 0);
-				//tryrtutr
 			}
 		});
 
@@ -50,7 +49,10 @@ public class ThreePSActivity extends Activity {
 
 
 				Log.v(TAG,"Receipt button pressed");
-				Toast.makeText(ThreePSActivity.this, "Receipt Button clicked!", Toast.LENGTH_SHORT).show();		
+				for(int i = 0;i<qrContents.size();i++){
+					Log.v(TAG,qrContents.get(i));
+				}
+				Toast.makeText(ThreePSActivity.this, "Receipt Button clicked!", Toast.LENGTH_SHORT).show();
 			}
 		});
 
@@ -60,9 +62,16 @@ public class ThreePSActivity extends Activity {
 			if (resultCode == RESULT_OK) {
 				String contents = intent.getStringExtra("SCAN_RESULT");
 				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-
+				
+				qrContents.add(contents);
+				
 				Log.v(TAG,contents);
 				// Handle successful scan
+				
+				Intent i = new Intent(this,PurchaseActivity.class);
+				i.putStringArrayListExtra("qr_contents", qrContents);
+				
+				startActivity(i);
 			} else if (resultCode == RESULT_CANCELED) {
 				// Handle cancel
 			}
