@@ -1,5 +1,6 @@
 package com.object.disoriented;
 
+
 import java.util.Random;
 import java.io.IOException;
 import java.io.InputStream;
@@ -12,6 +13,10 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.Statement;
+
+import java.util.ArrayList;
+import java.util.StringTokenizer;
+
 
 import android.app.Activity;
 import android.content.Intent;
@@ -29,12 +34,14 @@ public class ThreePSActivity extends Activity {
 	private Button btnReceipt;
 	private String user = "1";
 	private String TAG = "3PS Buyer Screen";
-	
+	private ArrayList<String> qrContents;
 	@Override
 
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.buyer_start);
+
+		qrContents = new ArrayList<String>();
 
 		btnBuy = (Button) findViewById(R.id.btnBuy);
 		btnBuy.setOnClickListener(new OnClickListener() {
@@ -48,7 +55,6 @@ public class ThreePSActivity extends Activity {
 				Intent intent = new Intent("com.google.zxing.client.android.SCAN");
 				intent.putExtra("SCAN_MODE", "QR_CODE_MODE");
 				startActivityForResult(intent, 0);
-				//tryrtutr
 			}
 		});
 
@@ -61,58 +67,74 @@ public class ThreePSActivity extends Activity {
 
 
 				Log.v(TAG,"Receipt button pressed");
-				Toast.makeText(ThreePSActivity.this, "Receipt Button clicked!", Toast.LENGTH_SHORT).show();		
+				for(int i = 0;i<qrContents.size();i++){
+					Log.v(TAG,qrContents.get(i));
+				}
+				Toast.makeText(ThreePSActivity.this, "Receipt Button clicked!", Toast.LENGTH_SHORT).show();
 			}
 		});
-        
-    }
+
+	}
 	DB newConnection = new DB();
-    public void onActivityResult(int requestCode, int resultCode, Intent intent) {
-        if (requestCode == 0) {
-            if (resultCode == RESULT_OK) {
-            	Log.v(TAG, "gets here");
-                String contents = intent.getStringExtra("SCAN_RESULT");
-                
-                Log.v(TAG, "gets here2");
-                try{
-                	String url = "http://128.61.105.48/session.php";
-                	String charset = "UTF-8";
-                	String param1 = contents;
-                	String param2 = user;
-                	
-                	String query = "QRinput=" + param1 + "&user_id=" + param2;
-                	URLConnection con = new URL(url +"?" + query).openConnection();
-                	con.setRequestProperty("Accept-Charset", charset);
+	private String sessionID;
+	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		if (requestCode == 0) {
+			if (resultCode == RESULT_OK) {
+				Log.v(TAG, "gets here");
+				String contents = intent.getStringExtra("SCAN_RESULT");
+				StringTokenizer st = new StringTokenizer(contents,"\n");
 
-                	Log.v(TAG, url + "?" + query);
-                	
+				while(st.hasMoreTokens()){
+					qrContents.add(st.nextToken());
+				}
 
-                } catch (SQLException e) {
-                	e.printStackTrace();
-                } catch (MalformedURLException e) {
+
+				Log.v(TAG,contents);
+				Log.v(TAG, "gets here2");
+				try{
+					String url = "http://128.61.105.48/session.php";
+					String charset = "UTF-8";
+					String param1 = contents;
+					String param2 = user;
+
+					String query = "QRinput=" + param1 + "&user_id=" + param2;
+					URLConnection con = new URL(url +"?" + query).openConnection();
+					con.setRequestProperty("Accept-Charset", charset);				
+					Log.v(TAG, url + "?" + query);
+					sessionID = "";
+
+
+				} catch (SQLException e) {
+					e.printStackTrace();
+				} catch (MalformedURLException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
-                Log.v(TAG,contents);
-                // Handle successful scan
-            } else if (resultCode == RESULT_CANCELED) {
-                // Handle cancel
-            }
-        }
-    }
-    public String genSessId(){
-    	String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
-    	Random rnd = new Random();
+				Log.v(TAG,contents);
+				// Handle successful scan
 
-   	   	StringBuilder sb = new StringBuilder( 40 );
-   	   	for( int i = 0; i < 40; i++)
-   	   		sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
-   	   	return sb.toString();
+				Intent i = new Intent(this,PurchaseActivity.class);
+				i.putStringArrayListExtra("qr_contents", qrContents);
+				i.putExtra("session_id", sessionID);
+				startActivity(i);
 
-    }
-	
+			} else if (resultCode == RESULT_CANCELED) {
+				// Handle cancel
+			}
+		}
+	}
+	public String genSessId(){
+		String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+		Random rnd = new Random();
+
+		StringBuilder sb = new StringBuilder( 40 );
+		for( int i = 0; i < 40; i++)
+			sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+		return sb.toString();
+
+	}
 
 }
