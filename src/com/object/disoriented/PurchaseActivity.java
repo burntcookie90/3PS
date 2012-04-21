@@ -6,6 +6,9 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
 import android.widget.TextView;
 
 public class PurchaseActivity extends Activity {
@@ -14,6 +17,7 @@ public class PurchaseActivity extends Activity {
 	private TextView txtPrice;
 	private TextView txtItemName;
 	private TextView txtStoreName;
+	private Button btnPurchase;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
@@ -43,5 +47,15 @@ public class PurchaseActivity extends Activity {
 		Log.v(TAG,qrContents.get(2));
 		txtStoreName.setText("From Store: " + qrContents.get(0));
 		Log.v(TAG,qrContents.get(0));
+		
+		btnPurchase = (Button)findViewById(R.id.btnPurchase);
+		btnPurchase.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				
+			}
+		});
 	}
 }
