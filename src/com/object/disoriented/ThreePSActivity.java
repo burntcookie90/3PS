@@ -14,6 +14,9 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -165,6 +168,21 @@ public class ThreePSActivity extends Activity {
    	   	return sb.toString();
 
     }
-	
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.buyer_start_menu, menu);
+        return true;
+    }	
+    
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        // Handle item selection
+    	Intent intent = new Intent(Intent.ACTION_MAIN);
+    	intent.addCategory(Intent.CATEGORY_HOME);
+    	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+    	startActivity(intent);
+    	return true;
+    }
 
 }

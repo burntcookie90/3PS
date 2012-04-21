@@ -6,5 +6,6 @@
     <string name="buyString">Buy!</string>
     <string name="receicptString">Show Receipt!</string>
     <string name="purchaseButtonString">Purchase!</string>
+    <string name="menu_exit">Exit</string>
 
 </resources>

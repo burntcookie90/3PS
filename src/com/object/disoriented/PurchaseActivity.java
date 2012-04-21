@@ -12,6 +12,9 @@ import android.content.Intent;
 import android.database.SQLException;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.Window;
@@ -26,6 +29,7 @@ public class PurchaseActivity extends Activity {
 	private TextView txtStoreName;
 	private Button btnPurchase;
 	private String sessID;
+	private TextView spaceHolder;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -56,8 +60,10 @@ public class PurchaseActivity extends Activity {
 		Log.v(TAG,qrContents.get(1));
 		txtItemName.setText("Item: "+qrContents.get(2));
 		Log.v(TAG,qrContents.get(2));
-		txtStoreName.setText("From Store: " + qrContents.get(0));
+		txtStoreName.setText("From: " + qrContents.get(0));
 		Log.v(TAG,qrContents.get(0));
+		spaceHolder = (TextView)findViewById(R.id.textView1);
+		spaceHolder.setText("");
 		
 		btnPurchase = (Button)findViewById(R.id.btnPurchase);
 		btnPurchase.setOnClickListener(new OnClickListener() {
@@ -111,4 +117,21 @@ public class PurchaseActivity extends Activity {
 			}
 		});
 	}
+	
+	 @Override
+	    public boolean onCreateOptionsMenu(Menu menu) {
+	        MenuInflater inflater = getMenuInflater();
+	        inflater.inflate(R.menu.purchase_activity_menu, menu);
+	        return true;
+	    }	
+	    
+	    @Override
+	    public boolean onOptionsItemSelected(MenuItem item) {
+	        // Handle item selection
+	    	Intent intent = new Intent(Intent.ACTION_MAIN);
+	    	intent.addCategory(Intent.CATEGORY_HOME);
+	    	intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+	    	startActivity(intent);
+	    	return true;
+	    }
 }
