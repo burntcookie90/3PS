@@ -1,5 +1,7 @@
 package com.object.disoriented;
 
+import java.util.Random;
+
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +15,8 @@ public class ThreePSActivity extends Activity {
     /** Called when the activity is first created. */
 	private Button btnBuy;
 	private Button btnReceipt;
+	private String user = "1";
+	private String sess_id;
 	private String TAG = "3PS Buyer Screen";
     @Override
     
@@ -55,12 +59,32 @@ public class ThreePSActivity extends Activity {
             if (resultCode == RESULT_OK) {
                 String contents = intent.getStringExtra("SCAN_RESULT");
                 String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
-                
+                String sess_id = genSessId();
+                String[] QRvals = contents.split(";");
+                String sq1 = "INSERT INTO session (SessionId, buyer, seller) VALUES ('"+sess_id+"','"+QRvals[0]+"','"+user+"')";
+                try{
+                	Statement stmt = con.createStatement();
+                	System.err.println(sql);
+                	ResultSet rs = stmt.executeQuery(sql);
+                } catch (SQLException e) {
+                	e.printStackTrace();
+                }
+                Log.v(TAG,contents);
                 // Handle successful scan
             } else if (resultCode == RESULT_CANCELED) {
                 // Handle cancel
             }
         }
+    }
+    public String genSessId(){
+    	String AB = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+    	Random rnd = new Random();
+
+   	   	StringBuilder sb = new StringBuilder( 40 );
+   	   	for( int i = 0; i < 40; i++)
+   	   		sb.append( AB.charAt( rnd.nextInt(AB.length()) ) );
+   	   	return sb.toString();
+
     }
 
 }
