@@ -1,6 +1,7 @@
 package com.object.disoriented;
 
 import java.util.ArrayList;
+import java.util.StringTokenizer;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -63,7 +64,12 @@ public class ThreePSActivity extends Activity {
 				String contents = intent.getStringExtra("SCAN_RESULT");
 				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 				
-				qrContents.add(contents);
+				StringTokenizer st = new StringTokenizer(contents);
+				
+				while(st.hasMoreTokens()){
+					qrContents.add(contents);
+				}
+				
 				
 				Log.v(TAG,contents);
 				// Handle successful scan
