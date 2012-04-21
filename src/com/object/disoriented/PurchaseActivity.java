@@ -37,11 +37,11 @@ public class PurchaseActivity extends Activity {
 		txtItemName = (TextView)findViewById(R.id.txtItemName);
 		txtStoreName = (TextView)findViewById(R.id.txtStoreName);
 		
-		txtPrice.setText(qrContents.get(1));
+		txtPrice.setText("$"+qrContents.get(1));
 		Log.v(TAG,qrContents.get(1));
-		txtItemName.setText(qrContents.get(2));
+		txtItemName.setText("Item: "+qrContents.get(2));
 		Log.v(TAG,qrContents.get(2));
-		txtStoreName.setText(qrContents.get(0));
+		txtStoreName.setText("From Store: " + qrContents.get(0));
 		Log.v(TAG,qrContents.get(0));
 	}
 }
