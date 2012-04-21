@@ -1,9 +1,15 @@
 package com.object.disoriented;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLConnection;
 import java.util.ArrayList;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.database.SQLException;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -30,6 +36,8 @@ public class PurchaseActivity extends Activity {
 			qrContents.add(intent.getStringArrayListExtra("qr_contents").get(i));
 		}
 		
+		sessID = intent.getStringExtra("sess_id");
+		
 		Log.v(TAG,""+qrContents.size());
 		for(int i = 0; i<qrContents.size();i++){
 			String out = qrContents.get(i);
@@ -55,7 +63,41 @@ public class PurchaseActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				
+				try{
+					Log.v(TAG, "gets to purchase BTN");
+                	String url = "http://128.61.105.48/session.php";
+                	String charset = "UTF-8";
+                	String param1 = sessID;
+                	String query = "sess_id=" + param1;
+                	String users = "";
+                	String[] usersArr = new String[2];
+                	URLConnection con = new URL(url +"?" + query).openConnection();
+                	Log.v(TAG,url +"?" + query);
+                	con.setRequestProperty("Accept-Charset", charset);
+                	
+                	InputStream retStream = con.getInputStream();
+                	int d = 0;
+                	while (d != -1){
+                		d = retStream.read();
+                		if(d != -1){
+                			users += (char)d;
+                		}
+                	}
+                	usersArr = users.split(";");
+                	Log.v(TAG,users);
+                	
+                	param1 = usersArr[0];
+                	String param2 = usersArr[1];
+                	query = "buyer=" + param1 + "&seller=" + param2;
+                	con = new URL(url +"?" + query).openConnection();
+                	con.setRequestProperty("Accept-Charset", charset);
+				} catch (SQLException e) {
+                	e.printStackTrace();
+                } catch (MalformedURLException e) {
+					e.printStackTrace();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
 			}
 		});
 	}
