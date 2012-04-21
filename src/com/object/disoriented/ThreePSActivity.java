@@ -2,6 +2,7 @@ package com.object.disoriented;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.SQLException;
 
 import android.app.Activity;
 import android.content.Intent;
@@ -17,6 +18,7 @@ public class ThreePSActivity extends Activity {
 	private Button btnBuy;
 	private Button btnReceipt;
 	private String TAG = "3PS Buyer Screen";
+
 	@Override
 
 	public void onCreate(Bundle savedInstanceState) {
@@ -52,7 +54,6 @@ public class ThreePSActivity extends Activity {
 			}
 		});
 
-		DB newConnection = new DB();
 	}
 	public void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		if (requestCode == 0) {
@@ -67,5 +68,6 @@ public class ThreePSActivity extends Activity {
 			}
 		}
 	}
+
 
 }
