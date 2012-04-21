@@ -20,11 +20,14 @@ public class PurchaseActivity extends Activity {
 		setContentView(R.layout.purchase_screen);
 		
 		Intent intent = getIntent();
-		qrContents = intent.getStringArrayListExtra("qr_contents");
+		qrContents = new ArrayList<String>();
+		for(int i = 0; i<intent.getStringArrayListExtra("qr_contents").size();i++){
+			qrContents.add(intent.getStringArrayListExtra("qr_contents").get(i));
+		}
 		
 		Log.v(TAG,""+qrContents.size());
 		for(int i = 0; i<qrContents.size();i++){
-			String out = i+qrContents.get(i);
+			String out = qrContents.get(i);
 			Log.v(TAG,out);
 		}
 		
@@ -32,10 +35,13 @@ public class PurchaseActivity extends Activity {
 		
 		txtPrice = (TextView)findViewById(R.id.txtPrice);
 		txtItemName = (TextView)findViewById(R.id.txtItemName);
-		txtStoreName = (TextView)findViewById(R.id.txtPrice);
+		txtStoreName = (TextView)findViewById(R.id.txtStoreName);
 		
 		txtPrice.setText(qrContents.get(1));
+		Log.v(TAG,qrContents.get(1));
 		txtItemName.setText(qrContents.get(2));
+		Log.v(TAG,qrContents.get(2));
 		txtStoreName.setText(qrContents.get(0));
+		Log.v(TAG,qrContents.get(0));
 	}
 }

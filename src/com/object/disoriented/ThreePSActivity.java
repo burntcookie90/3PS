@@ -64,10 +64,10 @@ public class ThreePSActivity extends Activity {
 				String contents = intent.getStringExtra("SCAN_RESULT");
 				String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
 				
-				StringTokenizer st = new StringTokenizer(contents);
+				StringTokenizer st = new StringTokenizer(contents,"\n");
 				
 				while(st.hasMoreTokens()){
-					qrContents.add(contents);
+					qrContents.add(st.nextToken());
 				}
 				
 				
