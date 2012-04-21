@@ -5,7 +5,6 @@ import java.io.InputStream;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLConnection;
-import java.sql.Connection;
 import java.util.ArrayList;
 import java.util.Random;
 import java.util.StringTokenizer;
@@ -27,7 +26,6 @@ public class ThreePSActivity extends Activity {
 	private String user = "1";
 	private String sess_id;
 	private String TAG = "3PS Buyer Screen";
-	private Connection con;
 	private ArrayList<String> qrContents;
 	
 	@Override
@@ -66,16 +64,13 @@ public class ThreePSActivity extends Activity {
 		});
         
     }
-	DB newConnection = new DB();
     public void onActivityResult(int requestCode, int resultCode, Intent intent) {
         if (requestCode == 0) {
             if (resultCode == RESULT_OK) {
             	Log.v(TAG, "gets here");
                 String contents = intent.getStringExtra("SCAN_RESULT");
-                String format = intent.getStringExtra("SCAN_RESULT_FORMAT");
                 String sess_id = genSessId();
                 String[] QRvals = contents.split(";");
-                String sql = "INSERT INTO session (SessionId, buyer, seller) VALUES ('"+sess_id+"','"+QRvals[0]+"','"+user+"')";
                 StringTokenizer st = new StringTokenizer(contents,";");
                 
                 Log.v(TAG, "gets here2");
@@ -89,15 +84,10 @@ public class ThreePSActivity extends Activity {
                 	String charset = "UTF-8";
                 	String param1 = contents;
                 	String param2 = user;
-                	// ...
-                	//String query = String.format("param1=%s&param2=%s", URLEncoder.encode(param1, charset), URLEncoder.encode(param2, charset));
                 	String query = "QRinput=" + param1 + "&user_id=" + param2;
                 	URLConnection con = new URL(url +"?" + query).openConnection();
                 	con.setRequestProperty("Accept-Charset", charset);
 
-                	//con.setRequestMethod("GET");
-                	
-                	//con.getOutputStream().write("QRinput=123;456;789&user_id=999");
                 	
                 	InputStream blah = con.getInputStream();
                 	Log.v(TAG, url + "?" + query);
@@ -106,10 +96,8 @@ public class ThreePSActivity extends Activity {
                 } catch (SQLException e) {
                 	e.printStackTrace();
                 } catch (MalformedURLException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				} catch (IOException e) {
-					// TODO Auto-generated catch block
 					e.printStackTrace();
 				}
                 Log.v(TAG,contents);
