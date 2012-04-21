@@ -40,7 +40,7 @@ public class PurchaseActivity extends Activity {
 		
 		Log.v(TAG,""+qrContents.size());
 		for(int i = 0; i<qrContents.size();i++){
-			String out = qrContents.get(i);
+			String out = "Index: " + i+ " " + qrContents.get(i);
 			Log.v(TAG,out);
 		}
 		
@@ -87,10 +87,15 @@ public class PurchaseActivity extends Activity {
                 	Log.v(TAG,users);
                 	
                 	param1 = usersArr[0];
+                	Log.v(TAG,param1);
                 	String param2 = usersArr[1];
-                	query = "buyer=" + param1 + "&seller=" + param2;
-                	con = new URL(url +"?" + query).openConnection();
-                	con.setRequestProperty("Accept-Charset", charset);
+                	String param3 = qrContents.get(1);
+                	String param4 = sessID;
+                	query = "seller=" + param1 + "&buyer=" + param2 + "&value=" + param3 + "&sess_id=" + param4;
+                	URLConnection conn = new URL(url +"?" + query).openConnection();
+                	Log.v(TAG,url +"?" + query);
+                	conn.setRequestProperty("Accept-Charset", charset);
+                	retStream = conn.getInputStream();
 				} catch (SQLException e) {
                 	e.printStackTrace();
                 } catch (MalformedURLException e) {
@@ -98,6 +103,9 @@ public class PurchaseActivity extends Activity {
 				} catch (IOException e) {
 					e.printStackTrace();
 				}
+				
+				Intent intent = new Intent(PurchaseActivity.this, ItemPurchased.class);
+				startActivity(intent);
 			}
 		});
 	}
