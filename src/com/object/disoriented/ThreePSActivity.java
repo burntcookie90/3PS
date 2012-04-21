@@ -69,8 +69,8 @@ public class ThreePSActivity extends Activity {
             if (resultCode == RESULT_OK) {
             	Log.v(TAG, "gets here");
                 String contents = intent.getStringExtra("SCAN_RESULT");
-                String sess_id = genSessId();
                 String[] QRvals = contents.split(";");
+                String sess_id = "";
                 StringTokenizer st = new StringTokenizer(contents,";");
                 
                 Log.v(TAG, "gets here2");
@@ -89,7 +89,15 @@ public class ThreePSActivity extends Activity {
                 	con.setRequestProperty("Accept-Charset", charset);
 
                 	
-                	InputStream blah = con.getInputStream();
+                	InputStream sessionStream = con.getInputStream();
+                	int d = 0;
+                	while (d != -1){
+                		d = sessionStream.read();
+                		if(d != -1){
+                			sess_id += (char)d;
+                		}
+                	}
+                	Log.v(TAG, sess_id);
                 	Log.v(TAG, url + "?" + query);
                 	
 
@@ -105,6 +113,7 @@ public class ThreePSActivity extends Activity {
                 
                 Intent i = new Intent(this,PurchaseActivity.class);
                 i.putStringArrayListExtra("qr_contents", qrContents);
+                i.putExtra("sess_id", sess_id);
                 startActivity(i);
                 
             } else if (resultCode == RESULT_CANCELED) {
