@@ -30,6 +30,7 @@ public class PurchaseActivity extends Activity {
 	private Button btnPurchase;
 	private String sessID;
 	private TextView spaceHolder;
+	private String itemId,price,store;
 	
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
@@ -57,11 +58,17 @@ public class PurchaseActivity extends Activity {
 		txtStoreName = (TextView)findViewById(R.id.txtStoreName);
 		
 		txtPrice.setText("$"+qrContents.get(1));
+		price = qrContents.get(1);
 		Log.v(TAG,qrContents.get(1));
+		
 		txtItemName.setText("Item: "+qrContents.get(2));
+		itemId = qrContents.get(2);
 		Log.v(TAG,qrContents.get(2));
+		
 		txtStoreName.setText("From: " + qrContents.get(0));
+		store = qrContents.get(0);
 		Log.v(TAG,qrContents.get(0));
+		
 		spaceHolder = (TextView)findViewById(R.id.textView1);
 		spaceHolder.setText("");
 		
@@ -104,6 +111,8 @@ public class PurchaseActivity extends Activity {
                 	Log.v(TAG,url +"?" + query);
                 	conn.setRequestProperty("Accept-Charset", charset);
                 	retStream = conn.getInputStream();
+                	ThreePSActivity.itemList.addItem(itemId, price);
+                	Log.v(TAG,itemId+" "+price);
 				} catch (SQLException e) {
                 	e.printStackTrace();
                 } catch (MalformedURLException e) {

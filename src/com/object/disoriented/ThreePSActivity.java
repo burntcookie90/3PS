@@ -63,14 +63,15 @@ public class ThreePSActivity extends Activity {
 	private String sess_id;
 	private String TAG = "3PS Buyer Screen";
 	private ArrayList<String> qrContents;
-	
+	public static ItemList itemList = new ItemList();
 	@Override
 
 	public void onCreate(Bundle savedInstanceState) {
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.buyer_start);
-
+		
+		
 		qrContents = new ArrayList<String>();
 		btnBuy = (Button) findViewById(R.id.btnBuy);
 		btnBuy.setOnClickListener(new OnClickListener() {
@@ -94,9 +95,11 @@ public class ThreePSActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 
-
+				
 				Log.v(TAG,"Receipt button pressed");
 				Toast.makeText(ThreePSActivity.this, "Receipt Button clicked!", Toast.LENGTH_SHORT).show();		
+				Intent intent = new Intent(ThreePSActivity.this,ReceiptActivity.class);
+				startActivity(intent);
 			}
 		});
         
