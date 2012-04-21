@@ -32,7 +32,7 @@ public class PurchaseActivity extends Activity {
 		
 		Log.v(TAG,""+qrContents.size());
 		for(int i = 0; i<qrContents.size();i++){
-			String out = qrContents.get(i);
+			String out = "Index: " + i+ " " + qrContents.get(i);
 			Log.v(TAG,out);
 		}
 		
@@ -56,6 +56,8 @@ public class PurchaseActivity extends Activity {
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
 				
+				Intent intent = new Intent(PurchaseActivity.this, ItemPurchased.class);
+				startActivity(intent);
 			}
 		});
 	}
